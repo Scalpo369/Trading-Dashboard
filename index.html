@@ -43,20 +43,17 @@
             </table>
         </div>
 
-        <!-- Sezione Trading Bot -->
-        <div class="section trading-bot">
-            <h2>Trading Bot</h2>
-            <p>Automatizza il tuo trading con il nostro Trading Bot avanzato. Imposta il tuo bot per fare trading in modo automatico.</p>
-            <button id="startBot">Avvia Trading Bot</button>
-            <button id="stopBot">Ferma Trading Bot</button>
-        </div>
-
         <!-- Sezione Radio di San Andreas -->
         <div class="section radio">
             <h2>Radio San Andreas</h2>
             <p>Ascolta la musica dalla radio di San Andreas, con stili anni '90!</p>
-            <!-- Includi un flusso radio con musica simile a San Andreas -->
-            <audio controls autoplay>
+            <label for="radioSelect">Seleziona la radio:</label>
+            <select id="radioSelect">
+                <option value="http://listen.radionomy.com/house-rhythm-radio.mp3">House Rhythm Radio</option>
+                <option value="http://listen.radionomy.com/rock-radio.mp3">Rock Radio</option>
+                <option value="http://listen.radionomy.com/chill-out-radio.mp3">Chillout Radio</option>
+            </select>
+            <audio id="radioPlayer" controls autoplay>
                 <source src="http://listen.radionomy.com/house-rhythm-radio.mp3" type="audio/mpeg">
                 Il tuo browser non supporta il tag audio.
             </audio>
@@ -94,13 +91,11 @@
             document.getElementById('leverageValue').textContent = this.value + 'x';
         });
 
-        // Interazione con il Trading Bot
-        document.getElementById('startBot').addEventListener('click', function() {
-            alert('Trading Bot Avviato!');
-        });
-
-        document.getElementById('stopBot').addEventListener('click', function() {
-            alert('Trading Bot Fermato!');
+        // Cambiare radio
+        document.getElementById('radioSelect').addEventListener('change', function() {
+            const radioPlayer = document.getElementById('radioPlayer');
+            radioPlayer.src = this.value;
+            radioPlayer.play();
         });
     </script>
 </body>
