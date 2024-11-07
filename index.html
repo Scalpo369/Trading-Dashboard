@@ -4,177 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Dashboard</title>
-  <script src="https://unpkg.com/@solana/web3.js@1.43.0/dist/solanaWeb3.min.js"></script>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 50px auto;
-      background-color: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .button-container {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-    }
-    button {
-      padding: 10px 20px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      margin: 0 10px;
-      font-size: 16px;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #4CAF50;
-      color: white;
-    }
-    .form-container {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-    .form-container input, .form-container select, .form-container button {
-      width: 30%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
-    .form-container button {
-      background-color: #4CAF50;
-      color: white;
-    }
-    .form-container button:hover {
-      background-color: #45a049;
-    }
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #333;
-      text-align: center;
-    }
-    #connect-wallet {
-      padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      border-radius: 5px;
-      border: none;
-      display: block;
-      margin: 0 auto;
-    }
-    #connect-wallet:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
 </head>
 <body>
-
-  <div class="container">
+  <header>
     <h1>Trading Dashboard</h1>
+    <button id="connect-wallet">Connetti Wallet</button>
+  </header>
+  
+  <main>
+    <section id="wallet-info">
+      <h2>Saldo</h2>
+      <div id="wallet-balance">Caricando...</div>
+    </section>
 
-    <div id="wallet-status">
-      <button id="connect-wallet">Connetti Wallet Phantom</button>
-    </div>
-
-    <div id="trade-section" style="display:none;">
-      <div class="form-container">
-        <div>
-          <label for="capital">Capitale da investire (SOL):</label>
-          <input type="number" id="capital" name="capital" placeholder="Es: 1 SOL">
-        </div>
-        <div>
-          <label for="leverage">Leva:</label>
-          <select id="leverage" name="leverage">
-            <option value="2">2x</option>
-            <option value="10">10x</option>
-            <option value="100">100x</option>
-            <option value="500">500x</option>
-            <option value="1000">1000x</option>
-          </select>
-        </div>
-        <div>
-          <button type="button" onclick="calcolaLeva()">Calcola Esposizione</button>
-        </div>
+    <section id="trade">
+      <h2>Trading</h2>
+      <div>
+        <label for="asset">Seleziona Asset:</label>
+        <select id="asset">
+          <option value="BTC">Bitcoin</option>
+          <option value="ETH">Ethereum</option>
+          <option value="SOL">Solana</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="amount">Quantità:</label>
+        <input type="number" id="amount" placeholder="Inserisci la quantità">
       </div>
 
-      <p id="result"></p>
-
-      <div class="button-container">
-        <button onclick="simulaAcquisto()">Acquista</button>
-        <button onclick="simulaVendita()">Vendi</button>
+      <div>
+        <label for="leverage">Leva (Max 5000x):</label>
+        <input type="number" id="leverage" max="5000" value="1" />
       </div>
-    </div>
-  </div>
 
-  <script>
-    const connectButton = document.getElementById("connect-wallet");
-    const tradeSection = document.getElementById("trade-section");
+      <div>
+        <button id="buy-button">Compra</button>
+        <button id="sell-button">Vendi</button>
+      </div>
+    </section>
 
-    let walletConnected = false;
+    <section id="positions">
+      <h2>Posizioni Aperte</h2>
+      <div id="open-positions">Nessuna posizione aperta</div>
+    </section>
+  </main>
 
-    // Funzione per connettere il wallet Phantom
-    connectButton.addEventListener("click", async () => {
-      if (window.solana && window.solana.isPhantom) {
-        try {
-          const response = await window.solana.connect();
-          console.log("Wallet connesso:", response.publicKey.toString());
-          connectButton.innerText = "Wallet Connesso: " + response.publicKey.toString();
-          walletConnected = true;
-          tradeSection.style.display = "block"; // Mostra la sezione trading
-        } catch (error) {
-          console.log("Errore di connessione:", error);
-        }
-      } else {
-        alert("Installa Phantom Wallet per connetterti!");
-      }
-    });
+  <footer>
+    <p>Powered by Solana</p>
+  </footer>
 
-    // Funzione per calcolare l'esposizione totale con leva
-    function calcolaLeva() {
-      const capital = parseFloat(document.getElementById("capital").value);
-      const leverage = parseInt(document.getElementById("leverage").value);
-      const exposure = capital * leverage;
-      document.getElementById("result").innerText = `Esposizione totale: ${exposure} SOL`;
-    }
-
-    // Funzione per simulare acquisto
-    function simulaAcquisto() {
-      if (!walletConnected) {
-        alert("Connetti prima il tuo wallet.");
-        return;
-      }
-      alert("Acquisto simulato con successo!");
-      // Qui puoi aggiungere la logica per interagire con un contratto smart
-    }
-
-    // Funzione per simulare vendita
-    function simulaVendita() {
-      if (!walletConnected) {
-        alert("Connetti prima il tuo wallet.");
-        return;
-      }
-      alert("Vendita simulata con successo!");
-      // Qui puoi aggiungere la logica per interagire con un contratto smart
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
