@@ -92,3 +92,21 @@ h1 {
 .trading-bot button:active {
     background-color: #3e8e41;
 }
+
+/* Sezione Radio */
+.radio {
+    background-color: #3b3b5c;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.radio h2 {
+    color: #ffffff;
+}
+
+.radio audio {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
