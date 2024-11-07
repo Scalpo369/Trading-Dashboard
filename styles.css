@@ -19,6 +19,32 @@ h1, h2, h3 {
     margin-bottom: 30px;
 }
 
+/* Wallet Connection */
+.wallet {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wallet button {
+    background-color: #ff4081;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.wallet button:hover {
+    background-color: #e7376a;
+}
+
+.wallet p {
+    font-size: 1rem;
+    color: #ccc;
+}
+
 /* Sezione Leva e Futures */
 .leverage {
     background-color: #333;
@@ -39,72 +65,4 @@ h1, h2, h3 {
 .market-data {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
-}
-
-.market-item {
-    background-color: #444;
-    padding: 15px;
-    border-radius: 8px;
-    width: 30%;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.market-item h3 {
-    color: #f1f1f1;
-}
-
-.market-item p {
-    color: #1db954;
-}
-
-/* Sezione Grafico Trading */
-.chart {
-    background-color: #444;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.chart canvas {
-    border-radius: 8px;
-}
-
-/* Sezione Ordine */
-.order-entry {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.order-entry label {
-    color: #fff;
-    font-size: 1rem;
-}
-
-.order-entry input, .order-entry select {
-    padding: 8px;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #222;
-    color: #fff;
-    width: 100%;
-}
-
-.order-entry button {
-    background-color: #ff4081;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.order-entry button:hover {
-    background-color: #e7376a;
-}
-
-/* Sezione
+   
