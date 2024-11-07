@@ -1,94 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Dashboard - Solana</title>
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.32.1/dist/web3.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Dashboard</title>
+  <script src="https://unpkg.com/@solana/web3.js@1.43.0/dist/solanaWeb3.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
-    <div id="content">
-        <h1>Trading Dashboard</h1>
 
-        <!-- Connetti il wallet Phantom -->
-        <button id="connect-wallet-btn">Connect Wallet</button>
-        <button id="send-order-btn" style="display:none;">Send Trade Order</button>
-        <p id="wallet-address"></p>
+  <h1>Trading Dashboard</h1>
 
-        <!-- Prezzo di Bitcoin in tempo reale -->
-        <h2>Real-Time Bitcoin Price</h2>
-        <p id="bitcoin-price">Loading...</p>
-    </div>
+  <div id="wallet-status">
+    <button id="connect-wallet">Connetti Wallet Phantom</button>
+  </div>
 
-    <script>
-        let walletAddress = null;
+  <div id="trade-section" style="display:none;">
+    <form>
+      <label for="capital">Capitale da investire (SOL):</label>
+      <input type="number" id="capital" name="capital">
+      <label for="leverage">Leva:</label>
+      <select id="leverage" name="leverage">
+        <option value="2">2x</option>
+        <option value="10">10x</option>
+        <option value="100">100x</option>
+      </select>
+      <button type="button" onclick="calcolaLeva()">Calcola Esposizione</button>
+    </form>
 
-        // Pulsante per connettere il wallet Phantom
-        const connectWalletButton = document.getElementById("connect-wallet-btn");
-        const sendOrderButton = document.getElementById("send-order-btn");
-        const walletAddressDisplay = document.getElementById("wallet-address");
+    <p id="result"></p>
+  </div>
 
-        // Funzione per connettersi al wallet Phantom
-        connectWalletButton.onclick = async () => {
-            if (window.solana && window.solana.isPhantom) {
-                try {
-                    const response = await window.solana.connect();
-                    walletAddress = response.publicKey.toString();
-                    walletAddressDisplay.innerHTML = `Connected: ${walletAddress}`;
-                    sendOrderButton.style.display = 'block';
-                } catch (err) {
-                    console.log(err);
-                    alert("Error connecting to wallet.");
-                }
-            } else {
-                alert("Please install Phantom Wallet.");
-            }
-        };
+  <script>
+    const connectButton = document.getElementById("connect-wallet");
+    const tradeSection = document.getElementById("trade-section");
 
-        // Funzione per inviare un ordine di trading
-        sendOrderButton.onclick = async () => {
-            if (!walletAddress) {
-                alert("Please connect your wallet first.");
-                return;
-            }
+    let walletConnected = false;
 
-            try {
-                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
-                const transaction = new solanaWeb3.Transaction();
-
-                // Creazione e invio della transazione
-                const { blockhash } = await connection.getRecentBlockhash();
-                transaction.recentBlockhash = blockhash;
-                transaction.feePayer = walletAddress;
-
-                // Logica per firmare e inviare la transazione
-                const signedTransaction = await window.solana.signTransaction(transaction);
-                const txid = await connection.sendRawTransaction(signedTransaction.serialize());
-
-                alert(`Transaction sent: ${txid}`);
-            } catch (err) {
-                console.log(err);
-                alert("Error sending order.");
-            }
-        };
-
-        // Funzione per recuperare il prezzo di Bitcoin in tempo reale
-        async function fetchBitcoinPrice() {
-            try {
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                const data = await response.json();
-                document.getElementById('bitcoin-price').innerText = `BTC/USD: $${data.bitcoin.usd}`;
-            } catch (err) {
-                console.error(err);
-                document.getElementById('bitcoin-price').innerText = "Error fetching price.";
-            }
+    // Funzione per connettere il wallet Phantom
+    connectButton.addEventListener("click", async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const response = await window.solana.connect();
+          console.log("Wallet connesso:", response.publicKey.toString());
+          connectButton.innerText = "Wallet Connesso: " + response.publicKey.toString();
+          walletConnected = true;
+          tradeSection.style.display = "block"; // Mostra la sezione trading
+        } catch (error) {
+          console.log("Errore di connessione:", error);
         }
+      } else {
+        alert("Installa Phantom Wallet per connetterti!");
+      }
+    });
 
-        // Aggiorna ogni 10 secondi
-        setInterval(fetchBitcoinPrice, 10000);
+    // Funzione per calcolare l'esposizione totale con leva
+    function calcolaLeva() {
+      const capital = parseFloat(document.getElementById("capital").value);
+      const leverage = parseInt(document.getElementById("leverage").value);
+      const exposure = capital * leverage;
+      document.getElementById("result").innerText = `Esposizione totale: ${exposure} SOL`;
+    }
 
-        // Carica il prezzo all'avvio
-        fetchBitcoinPrice();
-    </script>
+    // Funzione per ottenere il saldo dell'utente
+    async function mostraSaldo() {
+      const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("devnet"), "confirmed");
+      const publicKey = new solanaWeb3.PublicKey(window.solana.publicKey.toString());
+      const balance = await connection.getBalance(publicKey);
+      console.log("Saldo:", balance / solanaWeb3.LAMPORTS_PER_SOL, "SOL");
+    }
+  </script>
+
 </body>
 </html>
