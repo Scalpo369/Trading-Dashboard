@@ -70,3 +70,17 @@ button {
 button:hover {
     background-color: #ff80ab;
 }
+
+.section.performance canvas {
+    background-color: #2a2a40;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.performance {
+    text-align: center;
+}
+
+.performance canvas {
+    margin-top: 20px;
+}
