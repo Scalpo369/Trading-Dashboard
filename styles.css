@@ -1,57 +1,59 @@
+/* Stile di base del sito */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1e2f;
-    color: #c5c6ca;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.dashboard {
-    width: 90%;
-    max-width: 1200px;
+    font-family: 'Arial', sans-serif;
     background-color: #2a2a40;
+    color: #c5c6ca;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile della Dashboard */
+.dashboard {
+    width: 80%;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
 
-h1, h2 {
+h1 {
     text-align: center;
-    color: #ff79c6;
+    color: #f1f1f1;
 }
 
+/* Sezione di ciascun blocco */
 .section {
-    background-color: #343454;
+    background-color: #3b3b5c;
     border-radius: 8px;
-    margin: 20px 0;
     padding: 15px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
 }
 
 .section h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+    color: #ffffff;
 }
 
-.chart-placeholder, .order-book-placeholder {
-    background-color: #4a4a6a;
-    border-radius: 8px;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Sezione Leverage */
+.leverage label {
     color: #c5c6ca;
-    font-size: 1.2em;
-    margin-top: 15px;
 }
+
+#leverageSlider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+#leverageValue {
+    font-weight: bold;
+    color: #c5c6ca;
+}
+
+/* Sezione Grafico */
 .section.chart canvas {
     background-color: #2a2a40;
     border-radius: 8px;
     padding: 10px;
 }
+
+/* Sezione Order Book */
 .order-table {
     width: 100%;
     border-collapse: collapse;
@@ -70,4 +72,23 @@ h1, h2 {
 
 .order-table td {
     color: #c5c6ca;
+}
+
+/* Sezione Trading Bot */
+.trading-bot button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.trading-bot button:hover {
+    background-color: #45a049;
+}
+
+.trading-bot button:active {
+    background-color: #3e8e41;
 }
