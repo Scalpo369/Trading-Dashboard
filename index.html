@@ -5,21 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="dashboard">
         <h1>Trading Dashboard</h1>
-        
+
         <!-- Sezione Leva -->
         <div class="section leverage">
             <h2>High Leverages - 2000x</h2>
             <p>Gestisci posizioni con leva massima fino a 2000x per trading avanzato.</p>
+            <label for="leverageSlider">Seleziona la leva:</label>
+            <input type="range" id="leverageSlider" min="1" max="2000" value="2000" step="1">
+            <span id="leverageValue">2000x</span>
         </div>
 
         <!-- Grafico Trading -->
         <div class="section chart">
             <h2>Grafico Prezzi</h2>
-            <div class="chart-placeholder">Grafico in arrivo...</div>
+            <canvas id="priceChart" width="400" height="200"></canvas>
         </div>
 
         <!-- Sezione Futures -->
@@ -28,20 +32,65 @@
             <p>Trading di asset sintetici con liquidità decentralizzata su Solana.</p>
         </div>
 
-        <!-- Sezione Ordini -->
+        <!-- Sezione Order Book -->
         <div class="section order-book">
             <h2>Order Book</h2>
-            <div class="order-book-placeholder">Order Book in arrivo...</div>
+            <table class="order-table">
+                <tr><th>Prezzo</th><th>Quantità</th><th>Tipo</th></tr>
+                <tr><td>$23,500</td><td>0.5 BTC</td><td>Compra</td></tr>
+                <tr><td>$23,480</td><td>0.3 BTC</td><td>Compra</td></tr>
+                <tr><td>$23,520</td><td>0.4 BTC</td><td>Vendi</td></tr>
+            </table>
+        </div>
+
+        <!-- Sezione Trading Bot -->
+        <div class="section trading-bot">
+            <h2>Trading Bot</h2>
+            <p>Automatizza il tuo trading con il nostro Trading Bot avanzato. Imposta il tuo bot per fare trading in modo automatico.</p>
+            <button id="startBot">Avvia Trading Bot</button>
+            <button id="stopBot">Ferma Trading Bot</button>
         </div>
     </div>
+
+    <!-- Script per il Grafico e Interazioni -->
+    <script>
+        // Codice per il grafico dei prezzi
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        const priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+                datasets: [{
+                    label: 'Prezzo BTC/USD',
+                    data: [21000, 21500, 22000, 22500, 21800, 23000, 23500],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Interazione con lo slider della leva
+        document.getElementById('leverageSlider').addEventListener('input', function() {
+            document.getElementById('leverageValue').textContent = this.value + 'x';
+        });
+
+        // Interazione con il Trading Bot
+        document.getElementById('startBot').addEventListener('click', function() {
+            alert('Trading Bot Avviato!');
+        });
+
+        document.getElementById('stopBot').addEventListener('click', function() {
+            alert('Trading Bot Fermato!');
+        });
+    </script>
 </body>
 </html>
-<div class="section order-book">
-    <h2>Order Book</h2>
-    <table class="order-table">
-        <tr><th>Prezzo</th><th>Quantità</th><th>Tipo</th></tr>
-        <tr><td>$23,500</td><td>0.5 BTC</td><td>Compra</td></tr>
-        <tr><td>$23,480</td><td>0.3 BTC</td><td>Compra</td></tr>
-        <tr><td>$23,520</td><td>0.4 BTC</td><td>Vendi</td></tr>
-    </table>
-</div>
