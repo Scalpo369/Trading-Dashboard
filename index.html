@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
+    <!-- TradingView Widget -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
 
 <body>
@@ -22,26 +22,10 @@
             <button id="connect-wallet" class="btn-primary">Connetti Wallet</button>
         </div>
 
-        <!-- Sezione Dati di Mercato -->
-        <div class="market-data">
-            <div class="market-item">
-                <h3>Bitcoin (BTC)</h3>
-                <p>Prezzo: <span id="btc-price">-</span></p>
-            </div>
-            <div class="market-item">
-                <h3>Ethereum (ETH)</h3>
-                <p>Prezzo: <span id="eth-price">-</span></p>
-            </div>
-            <div class="market-item">
-                <h3>Solana (SOL)</h3>
-                <p>Prezzo: <span id="sol-price">-</span></p>
-            </div>
-        </div>
-
-        <!-- Sezione Grafico Prezzi -->
+        <!-- Sezione Grafico TradingView Candlestick -->
         <div class="section chart">
-            <h2>Grafico Prezzi</h2>
-            <canvas id="priceChart" width="400" height="200"></canvas>
+            <h2>Grafico Prezzi - Bitcoin</h2>
+            <div id="tv_chart_container" style="position: relative; height: 600px;"></div>
         </div>
 
         <!-- Sezione Order Book -->
@@ -89,76 +73,24 @@
 
         document.getElementById('connect-wallet').addEventListener('click', connectWallet);
 
-        // Funzione per ottenere i dati di mercato
-        async function getMarketData() {
-            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd');
-            const data = await response.json();
-
-            document.getElementById('btc-price').textContent = `$${data.bitcoin.usd}`;
-            document.getElementById('eth-price').textContent = `$${data.ethereum.usd}`;
-            document.getElementById('sol-price').textContent = `$${data.solana.usd}`;
-        }
-
-        // Funzione per aggiornare dinamicamente il grafico
-        function updateChartData() {
-            const updatedData = [23000, 23500, 24000, 24500, 25500, 26500, 27000]; // Example dynamic prices
-
-            priceChart.data.datasets[0].data = updatedData;
-            priceChart.update();
-        }
-
-        // Inizializza il grafico dei prezzi
-        const ctx = document.getElementById('priceChart').getContext('2d');
-        const priceChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-                datasets: [{
-                    label: 'Prezzo BTC/USD',
-                    data: [21000, 21500, 22000, 22500, 21800, 23000, 23500],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                }
-            }
+        // TradingView Chart Configuration (Candlestick)
+        new TradingView.widget({
+            autosize: true,
+            symbol: "BINANCE:BTCUSDT", // Pair di Bitcoin/USDT
+            interval: "60", // Intervallo 1 ora
+            container_id: "tv_chart_container",
+            datafeed: new TradingView.Datafeeds.UDFCompatibleDatafeed("https://demo_feed.tradingview.com"),
+            library_path: "https://s3.tradingview.com/",
+            locale: "en",
+            disabled_features: ["header_widget", "left_toolbar", "header_compare", "symbol_search", "timeframes_toolbar"],
+            enabled_features: ["study_templates"],
+            timezone: "Etc/UTC",
+            studies: [
+                "MACD",
+                "RSI",
+                "StochasticRSI"
+            ]
         });
-
-        // Funzione per aggiungere un ordine all'order book
-        document.getElementById('order-form').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const orderType = document.getElementById('order-type').value;
-            const orderAmount = document.getElementById('order-amount').value;
-            const orderPrice = document.getElementById('order-price').value;
-
-            const orderTable = document.querySelector('.order-table');
-            const newRow = orderTable.insertRow();
-            const typeCell = newRow.insertCell(0);
-            typeCell.textContent = orderType === 'buy' ? 'Compra' : 'Vendi';
-
-            const priceCell = newRow.insertCell(1);
-            priceCell.textContent = `$${orderPrice}`;
-
-            const amountCell = newRow.insertCell(2);
-            amountCell.textContent = orderAmount;
-
-            document.getElementById('order-form').reset();
-        });
-
-        // Aggiorna i dati e il grafico ogni 30 secondi
-        setInterval(getMarketData, 30000);
-        setInterval(updateChartData, 30000);
-
-        // Inizializzare i dati di mercato all'avvio
-        getMarketData();
     </script>
 </body>
 
