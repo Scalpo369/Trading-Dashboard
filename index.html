@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Dashboard</title>
+    <title>Crypto Trading Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <!-- TradingView Widget -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
@@ -26,7 +26,7 @@
             <div id="tv_chart_container" style="height: 600px;"></div>
         </div>
 
-        <!-- Sezione Order Book -->
+        <!-- Sezione Ordini -->
         <div class="order-entry">
             <h2>Fai un Ordine</h2>
             <form id="order-form">
@@ -43,7 +43,7 @@
         <!-- Sezione Order Book -->
         <div class="section order-book">
             <h2>Order Book</h2>
-            <table class="order-table">
+            <table class="order-table" id="order-book-table">
                 <tr>
                     <th>Tipo</th>
                     <th>Prezzo</th>
@@ -84,6 +84,23 @@
                 enabled_features: ["study_templates"],
             });
         }
+
+        // Funzione per aggiungere un ordine all'order book
+        document.getElementById('order-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const orderType = document.getElementById('order-type').value;
+            const orderAmount = document.getElementById('order-amount').value;
+            const orderPrice = document.getElementById('order-price').value;
+
+            const table = document.getElementById('order-book-table');
+            const newRow = table.insertRow();
+            newRow.insertCell(0).textContent = orderType.charAt(0).toUpperCase() + orderType.slice(1);
+            newRow.insertCell(1).textContent = `$${orderPrice}`;
+            newRow.insertCell(2).textContent = orderAmount;
+
+            // Reset form fields after order
+            document.getElementById('order-form').reset();
+        });
     </script>
 </body>
 </html>
