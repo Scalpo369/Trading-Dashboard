@@ -48,6 +48,19 @@ h1 {
     background-color: #555;
 }
 
+.btn-danger {
+    background-color: #e74c3c;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger:disabled {
+    background-color: #555;
+}
+
 .section {
     margin-bottom: 40px;
 }
