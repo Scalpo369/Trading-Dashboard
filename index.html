@@ -42,22 +42,6 @@
                 <tr><td>$23,520</td><td>0.4 BTC</td><td>Vendi</td></tr>
             </table>
         </div>
-
-        <!-- Sezione Radio di San Andreas con Deep House -->
-        <div class="section radio">
-            <h2>Radio Deep House</h2>
-            <p>Ascolta la musica Deep House per un'atmosfera unica!</p>
-            <label for="radioSelect">Seleziona la radio:</label>
-            <select id="radioSelect">
-                <option value="http://streaming.radionomy.com/House-Rhythm-Radio">Deep House Radio</option>
-                <option value="http://listen.radionomy.com/house-mix-radio.mp3">House Mix Radio</option>
-                <option value="http://listen.radionomy.com/chill-out-radio.mp3">Chillout Radio</option>
-            </select>
-            <audio id="radioPlayer" controls autoplay>
-                <source src="http://streaming.radionomy.com/House-Rhythm-Radio" type="audio/mpeg">
-                Il tuo browser non supporta il tag audio.
-            </audio>
-        </div>
     </div>
 
     <!-- Script per il Grafico e Interazioni -->
@@ -89,13 +73,6 @@
         // Interazione con lo slider della leva
         document.getElementById('leverageSlider').addEventListener('input', function() {
             document.getElementById('leverageValue').textContent = this.value + 'x';
-        });
-
-        // Cambiare radio
-        document.getElementById('radioSelect').addEventListener('change', function() {
-            const radioPlayer = document.getElementById('radioPlayer');
-            radioPlayer.src = this.value;
-            radioPlayer.play();
         });
     </script>
 </body>
