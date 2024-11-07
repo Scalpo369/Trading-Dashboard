@@ -3,119 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Trading Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- TradingView Widget -->
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-    <!-- Phantom Wallet Script -->
-    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
+    <title>Trading Dashboard - Solana</title>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.32.1/dist/web3.min.js"></script>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>Crypto Trading Dashboard</h1>
-        </header>
+    <div id="content">
+        <h1>Trading Dashboard</h1>
 
-        <!-- Sezione Wallet -->
-        <div class="wallet-info">
-            <span>Wallet Address: <span id="wallet-address">Connetti Wallet</span></span>
-            <button id="connect-wallet" class="btn-primary">Connetti Wallet</button>
-            <button id="disconnect-wallet" class="btn-danger" disabled>Disconnetti Wallet</button>
-        </div>
+        <!-- Connetti il wallet Phantom -->
+        <button id="connect-wallet-btn">Connect Wallet</button>
+        <button id="send-order-btn" style="display:none;">Send Trade Order</button>
+        <p id="wallet-address"></p>
 
-        <!-- Sezione Grafico TradingView Candlestick -->
-        <div class="section chart">
-            <h2>Grafico Prezzi - Bitcoin</h2>
-            <div id="tv_chart_container" style="height: 600px;"></div>
-        </div>
-
-        <!-- Sezione Ordini -->
-        <div class="order-entry">
-            <h2>Fai un Ordine</h2>
-            <form id="order-form">
-                <select id="order-type">
-                    <option value="buy">Compra</option>
-                    <option value="sell">Vendi</option>
-                </select>
-                <input type="number" id="order-amount" placeholder="Quantità" required>
-                <input type="number" id="order-price" placeholder="Prezzo" required>
-                <button type="submit">Aggiungi Ordine</button>
-            </form>
-        </div>
-
-        <!-- Sezione Order Book -->
-        <div class="section order-book">
-            <h2>Order Book</h2>
-            <table class="order-table" id="order-book-table">
-                <tr>
-                    <th>Tipo</th>
-                    <th>Prezzo</th>
-                    <th>Quantità</th>
-                </tr>
-            </table>
-        </div>
+        <!-- Prezzo di Bitcoin in tempo reale -->
+        <h2>Real-Time Bitcoin Price</h2>
+        <p id="bitcoin-price">Loading...</p>
     </div>
 
     <script>
-        let phantomWallet;
+        let walletAddress = null;
 
-        // Funzione per connettere il wallet Phantom
-        async function connectWallet() {
+        // Pulsante per connettere il wallet Phantom
+        const connectWalletButton = document.getElementById("connect-wallet-btn");
+        const sendOrderButton = document.getElementById("send-order-btn");
+        const walletAddressDisplay = document.getElementById("wallet-address");
+
+        // Funzione per connettersi al wallet Phantom
+        connectWalletButton.onclick = async () => {
             if (window.solana && window.solana.isPhantom) {
                 try {
                     const response = await window.solana.connect();
-                    phantomWallet = response.publicKey;
-                    document.getElementById('wallet-address').textContent = phantomWallet.toString();
-                    document.getElementById('connect-wallet').disabled = true;
-                    document.getElementById('disconnect-wallet').disabled = false;
+                    walletAddress = response.publicKey.toString();
+                    walletAddressDisplay.innerHTML = `Connected: ${walletAddress}`;
+                    sendOrderButton.style.display = 'block';
                 } catch (err) {
-                    alert("Errore nella connessione al wallet");
+                    console.log(err);
+                    alert("Error connecting to wallet.");
                 }
             } else {
-                alert("Phantom Wallet non trovato. Installa Phantom per continuare.");
+                alert("Please install Phantom Wallet.");
+            }
+        };
+
+        // Funzione per inviare un ordine di trading
+        sendOrderButton.onclick = async () => {
+            if (!walletAddress) {
+                alert("Please connect your wallet first.");
+                return;
+            }
+
+            try {
+                const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('devnet'), 'confirmed');
+                const transaction = new solanaWeb3.Transaction();
+
+                // Creazione e invio della transazione
+                const { blockhash } = await connection.getRecentBlockhash();
+                transaction.recentBlockhash = blockhash;
+                transaction.feePayer = walletAddress;
+
+                // Logica per firmare e inviare la transazione
+                const signedTransaction = await window.solana.signTransaction(transaction);
+                const txid = await connection.sendRawTransaction(signedTransaction.serialize());
+
+                alert(`Transaction sent: ${txid}`);
+            } catch (err) {
+                console.log(err);
+                alert("Error sending order.");
+            }
+        };
+
+        // Funzione per recuperare il prezzo di Bitcoin in tempo reale
+        async function fetchBitcoinPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                document.getElementById('bitcoin-price').innerText = `BTC/USD: $${data.bitcoin.usd}`;
+            } catch (err) {
+                console.error(err);
+                document.getElementById('bitcoin-price').innerText = "Error fetching price.";
             }
         }
 
-        async function disconnectWallet() {
-            phantomWallet = null;
-            document.getElementById('wallet-address').textContent = "Connetti Wallet";
-            document.getElementById('connect-wallet').disabled = false;
-            document.getElementById('disconnect-wallet').disabled = true;
-        }
+        // Aggiorna ogni 10 secondi
+        setInterval(fetchBitcoinPrice, 10000);
 
-        document.getElementById('connect-wallet').addEventListener('click', connectWallet);
-        document.getElementById('disconnect-wallet').addEventListener('click', disconnectWallet);
-
-        // Inizializzazione TradingView Candlestick Chart
-        window.onload = function () {
-            new TradingView.widget({
-                autosize: true,
-                symbol: "BINANCE:BTCUSDT", // Bitcoin/USDT pair
-                interval: "5", // 5-minute interval
-                container_id: "tv_chart_container",
-                timezone: "Etc/UTC",
-                locale: "en",
-                disabled_features: ["header_widget", "left_toolbar", "header_compare", "symbol_search", "timeframes_toolbar"],
-                enabled_features: ["study_templates"],
-            });
-        }
-
-        // Funzione per aggiungere un ordine all'order book
-        document.getElementById('order-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const orderType = document.getElementById('order-type').value;
-            const orderAmount = document.getElementById('order-amount').value;
-            const orderPrice = document.getElementById('order-price').value;
-
-            const table = document.getElementById('order-book-table');
-            const newRow = table.insertRow();
-            newRow.insertCell(0).textContent = orderType.charAt(0).toUpperCase() + orderType.slice(1);
-            newRow.insertCell(1).textContent = `$${orderPrice}`;
-            newRow.insertCell(2).textContent = orderAmount;
-
-            // Reset form fields after order
-            document.getElementById('order-form').reset();
-        });
+        // Carica il prezzo all'avvio
+        fetchBitcoinPrice();
     </script>
 </body>
 </html>
