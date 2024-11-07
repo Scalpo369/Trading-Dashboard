@@ -34,22 +34,6 @@ h2 {
     width: 100%;
 }
 
-#radioSelect {
-    width: 100%;
-    padding: 10px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-}
-
-audio {
-    width: 100%;
-    margin-top: 15px;
-    border-radius: 8px;
-    background-color: #333;
-}
-
 .order-table {
     width: 100%;
     border-collapse: collapse;
