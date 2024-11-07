@@ -1,51 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1e2f;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  color: #333;
 }
 
-#content {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #2a2a40;
-    border-radius: 10px;
-}
-
-h1 {
-    text-align: center;
-    color: #ffffff;
+header {
+  background-color: #2d3748;
+  padding: 20px;
+  color: white;
+  text-align: center;
 }
 
 button {
-    background-color: #3b3b5c;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 0;
-    width: 200px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 10px 0;
 }
 
 button:hover {
-    background-color: #4c4c6a;
+  background-color: #45a049;
 }
 
-h2 {
-    margin-top: 20px;
-    color: #c5c6ca;
+#trade {
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#bitcoin-price {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #4caf50;
+#trade label {
+  display: block;
+  margin: 10px 0 5px;
 }
 
-#wallet-address {
-    margin-top: 10px;
-    font-size: 1.2em;
+#trade input,
+#trade select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#positions {
+  margin-top: 40px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #2d3748;
+  color: white;
 }
