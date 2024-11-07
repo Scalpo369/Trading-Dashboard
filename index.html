@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Aggiungi Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- API per dati di mercato -->
+    <script>
+        async function getMarketData() {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd');
+            const data = await response.json();
+
+            const btcPrice = data.bitcoin.usd;
+            const ethPrice = data.ethereum.usd;
+            const solPrice = data.solana.usd;
+
+            document.getElementById('btc-price').textContent = `$${btcPrice}`;
+            document.getElementById('eth-price').textContent = `$${ethPrice}`;
+            document.getElementById('sol-price').textContent = `$${solPrice}`;
+        }
+
+        setInterval(getMarketData, 30000);
+        getMarketData();
+    </script>
 </head>
 <body>
     <div class="dashboard">
@@ -17,50 +36,59 @@
             <p>Gestisci posizioni con leva massima fino a 2000x per trading avanzato.</p>
         </div>
 
-        <!-- Grafico Trading -->
+        <!-- Sezione Prezzi di mercato -->
+        <div class="section market-data">
+            <h2>Market Data</h2>
+            <div class="market-item">
+                <h3>Bitcoin (BTC)</h3>
+                <p id="btc-price">Loading...</p>
+            </div>
+            <div class="market-item">
+                <h3>Ethereum (ETH)</h3>
+                <p id="eth-price">Loading...</p>
+            </div>
+            <div class="market-item">
+                <h3>Solana (SOL)</h3>
+                <p id="sol-price">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Sezione Grafico Trading -->
         <div class="section chart">
             <h2>Grafico Prezzi</h2>
             <canvas id="priceChart" width="400" height="200"></canvas>
         </div>
 
-        <!-- Sezione Futures -->
-        <div class="section futures">
-            <h2>Synthetic Asset Futures</h2>
-            <p>Trading di asset sintetici con liquidità decentralizzata su Solana.</p>
+        <!-- Sezione Ordini -->
+        <div class="section order-entry">
+            <h2>Inserisci Ordine</h2>
+            <form id="order-form">
+                <label for="order-type">Tipo Ordine:</label>
+                <select id="order-type">
+                    <option value="buy">Compra</option>
+                    <option value="sell">Vendi</option>
+                </select>
+                <br>
+                <label for="order-amount">Quantità:</label>
+                <input type="number" id="order-amount" placeholder="Quantità" required>
+                <br>
+                <label for="order-price">Prezzo:</label>
+                <input type="number" id="order-price" placeholder="Prezzo" required>
+                <br>
+                <button type="submit">Inserisci Ordine</button>
+            </form>
         </div>
 
         <!-- Sezione Order Book -->
         <div class="section order-book">
             <h2>Order Book</h2>
             <table class="order-table">
-                <tr><th>Prezzo</th><th>Quantità</th><th>Tipo</th></tr>
-                <tr><td>$23,500</td><td>0.5 BTC</td><td>Compra</td></tr>
-                <tr><td>$23,480</td><td>0.3 BTC</td><td>Compra</td></tr>
-                <tr><td>$23,520</td><td>0.4 BTC</td><td>Vendi</td></tr>
+                <tr><th>Tipo</th><th>Prezzo</th><th>Quantità</th></tr>
             </table>
-        </div>
-
-        <!-- Sezione Market Overview -->
-        <div class="section market-overview">
-            <h2>Market Overview</h2>
-            <div class="market-data">
-                <div class="market-item">
-                    <h3>Bitcoin (BTC)</h3>
-                    <p id="btc-price">$22,500</p>
-                </div>
-                <div class="market-item">
-                    <h3>Ethereum (ETH)</h3>
-                    <p id="eth-price">$1,500</p>
-                </div>
-                <div class="market-item">
-                    <h3>Solana (SOL)</h3>
-                    <p id="sol-price">$50</p>
-                </div>
-            </div>
         </div>
     </div>
 
-    <!-- Script per il Grafico -->
+    <!-- Script per Grafico -->
     <script>
         const ctx = document.getElementById('priceChart').getContext('2d');
         const priceChart = new Chart(ctx, {
@@ -85,22 +113,27 @@
             }
         });
 
-        // Funzione per aggiornare i prezzi di mercato
-        function updateMarketPrices() {
-            const btcPrice = (Math.random() * (25000 - 20000) + 20000).toFixed(2);
-            const ethPrice = (Math.random() * (1800 - 1200) + 1200).toFixed(2);
-            const solPrice = (Math.random() * (70 - 30) + 30).toFixed(2);
+        // Gestione ordini
+        document.getElementById('order-form').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            document.getElementById('btc-price').textContent = `$${btcPrice}`;
-            document.getElementById('eth-price').textContent = `$${ethPrice}`;
-            document.getElementById('sol-price').textContent = `$${solPrice}`;
-        }
+            const orderType = document.getElementById('order-type').value;
+            const orderAmount = document.getElementById('order-amount').value;
+            const orderPrice = document.getElementById('order-price').value;
 
-        // Aggiornare i prezzi ogni 10 secondi
-        setInterval(updateMarketPrices, 10000);
+            const orderTable = document.querySelector('.order-table');
+            const newRow = orderTable.insertRow();
+            const typeCell = newRow.insertCell(0);
+            typeCell.textContent = orderType === 'buy' ? 'Compra' : 'Vendi';
 
-        // Inizializza i prezzi al caricamento della pagina
-        updateMarketPrices();
+            const priceCell = newRow.insertCell(1);
+            priceCell.textContent = `$${orderPrice}`;
+
+            const amountCell = newRow.insertCell(2);
+            amountCell.textContent = orderAmount;
+
+            document.getElementById('order-form').reset();
+        });
     </script>
 </body>
 </html>
