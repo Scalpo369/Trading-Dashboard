@@ -5,57 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trading Dashboard</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
 </head>
 <body>
+
   <header>
-    <h1>Cyberpunk Trading Dashboard</h1>
-    <button id="connect-wallet">Connetti Wallet</button>
+    <h1>Crypto Trading Dashboard</h1>
   </header>
-  
+
   <main>
-    <section id="wallet-info">
-      <h2>Saldo</h2>
-      <div id="wallet-balance">Caricando...</div>
-    </section>
-
-    <section id="trade">
+    <div id="trade">
       <h2>Trading</h2>
-      <div>
-        <label for="asset">Seleziona Asset:</label>
-        <select id="asset">
-          <option value="BTC">Bitcoin</option>
-          <option value="ETH">Ethereum</option>
-          <option value="SOL">Solana</option>
-        </select>
-      </div>
+      <label for="amount">Amount (SOL):</label>
+      <input type="number" id="amount" placeholder="Enter amount to trade" />
       
-      <div>
-        <label for="amount">Quantità:</label>
-        <input type="number" id="amount" placeholder="Inserisci la quantità">
-      </div>
+      <label for="leverage">Leverage:</label>
+      <select id="leverage">
+        <option value="1">1x</option>
+        <option value="2">2x</option>
+        <option value="3">3x</option>
+        <option value="5000">5000x</option>
+      </select>
 
-      <div>
-        <label for="leverage">Leva (Max 5000x):</label>
-        <input type="number" id="leverage" max="5000" value="1" />
-      </div>
+      <button id="buy-button">Buy</button>
+      <button id="sell-button">Sell</button>
+    </div>
 
-      <div>
-        <button id="buy-button">Compra</button>
-        <button id="sell-button">Vendi</button>
-      </div>
-    </section>
+    <div id="positions">
+      <h2>Your Positions</h2>
+      <p>No active positions yet.</p>
+    </div>
 
-    <section id="positions">
-      <h2>Posizioni Aperte</h2>
-      <div id="open-positions">Nessuna posizione aperta</div>
-    </section>
+    <button id="connect-wallet">Connect Wallet</button>
+    <div id="wallet-info">
+      <p>Wallet Address: <span id="wallet-address"></span></p>
+      <p>Balance: <span id="wallet-balance">0.00 SOL</span></p>
+    </div>
   </main>
 
   <footer>
-    <p>Powered by Solana</p>
+    <p>&copy; 2024 Crypto Trading Dashboard</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.0.0-beta.9/lib/index.iife.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
