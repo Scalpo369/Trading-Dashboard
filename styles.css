@@ -10,7 +10,7 @@ body {
 }
 
 .dashboard {
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     background-color: #2a2a40;
     padding: 20px;
@@ -18,7 +18,32 @@ body {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }
 
-h1 {
+h1, h2 {
     text-align: center;
     color: #ff79c6;
+}
+
+.section {
+    background-color: #343454;
+    border-radius: 8px;
+    margin: 20px 0;
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.section h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.chart-placeholder, .order-book-placeholder {
+    background-color: #4a4a6a;
+    border-radius: 8px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #c5c6ca;
+    font-size: 1.2em;
+    margin-top: 15px;
 }
