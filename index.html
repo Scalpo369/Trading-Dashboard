@@ -3,50 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trading Dashboard</title>
+  <title>Trading Simulato con Leva 5000x</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>
-    <h1>Crypto Trading Dashboard</h1>
+    <h1>Simulazione Trading Leva 5000x</h1>
   </header>
 
   <main>
     <div id="trade">
-      <h2>Trading</h2>
-      <label for="amount">Amount (SOL):</label>
-      <input type="number" id="amount" placeholder="Enter amount to trade" />
-      
-      <label for="leverage">Leverage:</label>
+      <h2>Fai Trading</h2>
+      <label for="amount">Importo (in USD):</label>
+      <input type="number" id="amount" placeholder="Inserisci importo" />
+
+      <label for="leverage">Leva:</label>
       <select id="leverage">
-        <option value="1">1x</option>
-        <option value="2">2x</option>
-        <option value="3">3x</option>
         <option value="5000">5000x</option>
       </select>
 
-      <button id="buy-button">Buy</button>
-      <button id="sell-button">Sell</button>
+      <button id="buy-button">Compra</button>
+      <button id="sell-button">Vendi</button>
     </div>
 
-    <div id="positions">
-      <h2>Your Positions</h2>
-      <p>No active positions yet.</p>
+    <div id="result">
+      <h2>Esito dell'Operazione</h2>
+      <p id="profit-loss">Guadagni/Perdite: $0.00</p>
+      <p id="balance">Saldo: $1000.00</p>
     </div>
 
-    <button id="connect-wallet">Connect Wallet</button>
-    <div id="wallet-info">
-      <p>Wallet Address: <span id="wallet-address"></span></p>
-      <p>Balance: <span id="wallet-balance">0.00 SOL</span></p>
-    </div>
   </main>
 
   <footer>
-    <p>&copy; 2024 Crypto Trading Dashboard</p>
+    <p>&copy; 2024 Simulazione Trading Leva 5000x</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.0.0-beta.9/lib/index.iife.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
