@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,6 @@
     <!-- TradingView Widget -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
-
 <body>
     <div class="dashboard">
         <header class="header">
@@ -25,7 +23,7 @@
         <!-- Sezione Grafico TradingView Candlestick -->
         <div class="section chart">
             <h2>Grafico Prezzi - Bitcoin</h2>
-            <div id="tv_chart_container" style="position: relative; height: 600px;"></div>
+            <div id="tv_chart_container" style="height: 600px;"></div>
         </div>
 
         <!-- Sezione Order Book -->
@@ -73,25 +71,26 @@
 
         document.getElementById('connect-wallet').addEventListener('click', connectWallet);
 
-        // TradingView Chart Configuration (Candlestick)
-        new TradingView.widget({
-            autosize: true,
-            symbol: "BINANCE:BTCUSDT", // Pair di Bitcoin/USDT
-            interval: "60", // Intervallo 1 ora
-            container_id: "tv_chart_container",
-            datafeed: new TradingView.Datafeeds.UDFCompatibleDatafeed("https://demo_feed.tradingview.com"),
-            library_path: "https://s3.tradingview.com/",
-            locale: "en",
-            disabled_features: ["header_widget", "left_toolbar", "header_compare", "symbol_search", "timeframes_toolbar"],
-            enabled_features: ["study_templates"],
-            timezone: "Etc/UTC",
-            studies: [
-                "MACD",
-                "RSI",
-                "StochasticRSI"
-            ]
-        });
+        // Inizializzazione TradingView Candlestick Chart
+        window.onload = function () {
+            new TradingView.widget({
+                autosize: true,
+                symbol: "BINANCE:BTCUSDT", // Bitcoin/USDT pair
+                interval: "5", // 5-minute interval
+                container_id: "tv_chart_container",
+                datafeed: new TradingView.Datafeeds.UDFCompatibleDatafeed("https://demo_feed.tradingview.com"),
+                library_path: "https://s3.tradingview.com/",
+                locale: "en",
+                disabled_features: ["header_widget", "left_toolbar", "header_compare", "symbol_search", "timeframes_toolbar"],
+                enabled_features: ["study_templates"],
+                timezone: "Etc/UTC",
+                studies: [
+                    "MACD",
+                    "RSI",
+                    "StochasticRSI"
+                ]
+            });
+        }
     </script>
 </body>
-
 </html>
