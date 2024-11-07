@@ -15,9 +15,6 @@
         <div class="section leverage">
             <h2>High Leverages - 2000x</h2>
             <p>Gestisci posizioni con leva massima fino a 2000x per trading avanzato.</p>
-            <label for="leverageSlider">Seleziona la leva:</label>
-            <input type="range" id="leverageSlider" min="1" max="2000" value="2000" step="1">
-            <span id="leverageValue">2000x</span>
         </div>
 
         <!-- Grafico Trading -->
@@ -43,16 +40,28 @@
             </table>
         </div>
 
-        <!-- Sezione Performance di Trading -->
-        <div class="section performance">
-            <h2>Performance di Trading</h2>
-            <canvas id="performanceChart" width="400" height="200"></canvas>
+        <!-- Sezione Market Overview -->
+        <div class="section market-overview">
+            <h2>Market Overview</h2>
+            <div class="market-data">
+                <div class="market-item">
+                    <h3>Bitcoin (BTC)</h3>
+                    <p id="btc-price">$22,500</p>
+                </div>
+                <div class="market-item">
+                    <h3>Ethereum (ETH)</h3>
+                    <p id="eth-price">$1,500</p>
+                </div>
+                <div class="market-item">
+                    <h3>Solana (SOL)</h3>
+                    <p id="sol-price">$50</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Script per il Grafico e Interazioni -->
+    <!-- Script per il Grafico -->
     <script>
-        // Codice per il grafico dei prezzi
         const ctx = document.getElementById('priceChart').getContext('2d');
         const priceChart = new Chart(ctx, {
             type: 'line',
@@ -76,34 +85,22 @@
             }
         });
 
-        // Codice per il grafico delle performance di trading
-        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-        const performanceChart = new Chart(performanceCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-                datasets: [{
-                    label: 'Profitti/Perdite Giornalieri',
-                    data: [500, -200, 300, -50, 600, -100, 400],
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        // Funzione per aggiornare i prezzi di mercato
+        function updateMarketPrices() {
+            const btcPrice = (Math.random() * (25000 - 20000) + 20000).toFixed(2);
+            const ethPrice = (Math.random() * (1800 - 1200) + 1200).toFixed(2);
+            const solPrice = (Math.random() * (70 - 30) + 30).toFixed(2);
 
-        // Interazione con lo slider della leva
-        document.getElementById('leverageSlider').addEventListener('input', function() {
-            document.getElementById('leverageValue').textContent = this.value + 'x';
-        });
+            document.getElementById('btc-price').textContent = `$${btcPrice}`;
+            document.getElementById('eth-price').textContent = `$${ethPrice}`;
+            document.getElementById('sol-price').textContent = `$${solPrice}`;
+        }
+
+        // Aggiornare i prezzi ogni 10 secondi
+        setInterval(updateMarketPrices, 10000);
+
+        // Inizializza i prezzi al caricamento della pagina
+        updateMarketPrices();
     </script>
 </body>
 </html>
