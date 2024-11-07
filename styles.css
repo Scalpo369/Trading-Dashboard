@@ -49,4 +49,20 @@ h1, h2, h3 {
 }
 
 .action-btn {
-    background-color
+    background-color: #ff4081;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+.action-btn:hover {
+    background-color: #e7376a;
+}
+
+/* Sezione Market Data */
+.market-item {
+    padding: 10px;
