@@ -1,114 +1,51 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #181818;
+    background-color: #1e1e2f;
     color: #ffffff;
     margin: 0;
     padding: 0;
 }
 
-.dashboard {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 30px;
+#content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2a2a40;
+    border-radius: 10px;
 }
 
 h1 {
-    font-size: 2.5em;
-    color: #32b8c1;
-}
-
-.wallet-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #282828;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-.wallet-info span {
-    font-size: 1.1em;
-}
-
-.btn-primary {
-    background-color: #32b8c1;
-    color: #ffffff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn-primary:disabled {
-    background-color: #555;
-}
-
-.btn-danger {
-    background-color: #e74c3c;
-    color: #ffffff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn-danger:disabled {
-    background-color: #555;
-}
-
-.section {
-    margin-bottom: 40px;
-}
-
-.order-entry {
-    background-color: #282828;
-    padding: 20px;
-    border-radius: 5px;
-}
-
-.order-entry form input, .order-entry form select {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: none;
-    width: 100%;
-}
-
-.order-entry form button {
-    padding: 10px;
-    background-color: #32b8c1;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.order-entry form button:hover {
-    background-color: #26a1b1;
-}
-
-.order-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.order-table th, .order-table td {
-    padding: 10px;
     text-align: center;
-    border: 1px solid #4a4a6a;
-}
-
-.order-table th {
-    background-color: #3b3b5c;
     color: #ffffff;
 }
 
-.order-table td {
+button {
+    background-color: #3b3b5c;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0;
+    width: 200px;
+}
+
+button:hover {
+    background-color: #4c4c6a;
+}
+
+h2 {
+    margin-top: 20px;
     color: #c5c6ca;
+}
+
+#bitcoin-price {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #4caf50;
+}
+
+#wallet-address {
+    margin-top: 10px;
+    font-size: 1.2em;
 }
