@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,34 +8,86 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
-    <script>
-        let connection;
-        let wallet;
+</head>
 
-        // Connetti Phantom Wallet
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <h1>Crypto Trading Dashboard</h1>
+        </header>
+
+        <!-- Sezione Wallet -->
+        <div class="wallet-info">
+            <span>Wallet Address: <span id="wallet-address">Connetti Wallet</span></span>
+            <button id="connect-wallet" class="btn-primary">Connetti Wallet</button>
+        </div>
+
+        <!-- Sezione Dati di Mercato -->
+        <div class="market-data">
+            <div class="market-item">
+                <h3>Bitcoin (BTC)</h3>
+                <p>Prezzo: <span id="btc-price">-</span></p>
+            </div>
+            <div class="market-item">
+                <h3>Ethereum (ETH)</h3>
+                <p>Prezzo: <span id="eth-price">-</span></p>
+            </div>
+            <div class="market-item">
+                <h3>Solana (SOL)</h3>
+                <p>Prezzo: <span id="sol-price">-</span></p>
+            </div>
+        </div>
+
+        <!-- Sezione Grafico Prezzi -->
+        <div class="section chart">
+            <h2>Grafico Prezzi</h2>
+            <canvas id="priceChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Sezione Order Book -->
+        <div class="order-entry">
+            <h2>Fai un Ordine</h2>
+            <form id="order-form">
+                <select id="order-type">
+                    <option value="buy">Compra</option>
+                    <option value="sell">Vendi</option>
+                </select>
+                <input type="number" id="order-amount" placeholder="Quantità" required>
+                <input type="number" id="order-price" placeholder="Prezzo" required>
+                <button type="submit">Aggiungi Ordine</button>
+            </form>
+        </div>
+
+        <!-- Sezione Order Book -->
+        <div class="section order-book">
+            <h2>Order Book</h2>
+            <table class="order-table">
+                <tr>
+                    <th>Tipo</th>
+                    <th>Prezzo</th>
+                    <th>Quantità</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Funzione per connettere il wallet Phantom
         async function connectWallet() {
             if (window.solana && window.solana.isPhantom) {
-                wallet = window.solana;
-                await wallet.connect();
-                document.getElementById('wallet-address').textContent = wallet.publicKey.toString();
-                document.getElementById('connect-wallet').style.display = 'none';
-                document.getElementById('disconnect-wallet').style.display = 'block';
-                document.getElementById('wallet-info').style.display = 'flex';
+                try {
+                    const response = await window.solana.connect();
+                    document.getElementById('wallet-address').textContent = response.publicKey.toString();
+                    document.getElementById('connect-wallet').disabled = true;
+                } catch (err) {
+                    alert("Errore nella connessione al wallet");
+                }
             } else {
-                alert('Phantom Wallet non trovato. Installa Phantom Wallet per connetterti.');
+                alert("Phantom Wallet non trovato. Installa Phantom per continuare.");
             }
         }
 
-        // Disconnetti Phantom Wallet
-        async function disconnectWallet() {
-            if (wallet) {
-                await wallet.disconnect();
-                document.getElementById('wallet-address').textContent = 'Nessun wallet connesso';
-                document.getElementById('connect-wallet').style.display = 'block';
-                document.getElementById('disconnect-wallet').style.display = 'none';
-                document.getElementById('wallet-info').style.display = 'none';
-            }
-        }
+        document.getElementById('connect-wallet').addEventListener('click', connectWallet);
 
         // Funzione per ottenere i dati di mercato
         async function getMarketData() {
@@ -46,87 +99,15 @@
             document.getElementById('sol-price').textContent = `$${data.solana.usd}`;
         }
 
-        // Aggiorna i dati di mercato ogni 30 secondi
-        setInterval(getMarketData, 30000);
-        getMarketData();
-    </script>
-</head>
-<body>
-    <div class="dashboard">
-        <h1>Trading Dashboard</h1>
+        // Funzione per aggiornare dinamicamente il grafico
+        function updateChartData() {
+            const updatedData = [23000, 23500, 24000, 24500, 25500, 26500, 27000]; // Example dynamic prices
 
-        <!-- Wallet Connection -->
-        <div class="wallet">
-            <button id="connect-wallet" onclick="connectWallet()">Connetti Wallet Phantom</button>
-            <button id="disconnect-wallet" onclick="disconnectWallet()" style="display: none;">Disconnetti Wallet</button>
-        </div>
-        
-        <!-- Wallet Info -->
-        <div id="wallet-info" class="wallet-info" style="display: none;">
-            <p>Wallet connesso: <span id="wallet-address">Nessun wallet connesso</span></p>
-        </div>
+            priceChart.data.datasets[0].data = updatedData;
+            priceChart.update();
+        }
 
-        <!-- Sezione Leva e Futures -->
-        <div class="section leverage">
-            <h2>Futures con Leva 2000x</h2>
-            <p>Gestisci posizioni avanzate con leva fino a 2000x.</p>
-            <button class="action-btn">Inizia Trading</button>
-        </div>
-
-        <!-- Sezione Prezzi di mercato -->
-        <div class="section market-data">
-            <h2>Market Data</h2>
-            <div class="market-item">
-                <h3>Bitcoin (BTC)</h3>
-                <p id="btc-price">Loading...</p>
-            </div>
-            <div class="market-item">
-                <h3>Ethereum (ETH)</h3>
-                <p id="eth-price">Loading...</p>
-            </div>
-            <div class="market-item">
-                <h3>Solana (SOL)</h3>
-                <p id="sol-price">Loading...</p>
-            </div>
-        </div>
-
-        <!-- Sezione Grafico Trading -->
-        <div class="section chart">
-            <h2>Grafico Prezzi</h2>
-            <canvas id="priceChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- Sezione Ordini e Order Book -->
-        <div class="section order-entry">
-            <h2>Inserisci Ordine</h2>
-            <form id="order-form">
-                <label for="order-type">Tipo Ordine:</label>
-                <select id="order-type">
-                    <option value="buy">Compra</option>
-                    <option value="sell">Vendi</option>
-                </select>
-                <br>
-                <label for="order-amount">Quantità:</label>
-                <input type="number" id="order-amount" placeholder="Quantità" required>
-                <br>
-                <label for="order-price">Prezzo:</label>
-                <input type="number" id="order-price" placeholder="Prezzo" required>
-                <br>
-                <button class="action-btn" type="submit">Inserisci Ordine</button>
-            </form>
-        </div>
-
-        <!-- Sezione Order Book -->
-        <div class="section order-book">
-            <h2>Order Book</h2>
-            <table class="order-table">
-                <tr><th>Tipo</th><th>Prezzo</th><th>Quantità</th></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- Script per Grafico -->
-    <script>
+        // Inizializza il grafico dei prezzi
         const ctx = document.getElementById('priceChart').getContext('2d');
         const priceChart = new Chart(ctx, {
             type: 'line',
@@ -150,8 +131,8 @@
             }
         });
 
-        // Gestione ordini
-        document.getElementById('order-form').addEventListener('submit', function(event) {
+        // Funzione per aggiungere un ordine all'order book
+        document.getElementById('order-form').addEventListener('submit', function (event) {
             event.preventDefault();
 
             const orderType = document.getElementById('order-type').value;
@@ -171,6 +152,14 @@
 
             document.getElementById('order-form').reset();
         });
+
+        // Aggiorna i dati e il grafico ogni 30 secondi
+        setInterval(getMarketData, 30000);
+        setInterval(updateChartData, 30000);
+
+        // Inizializzare i dati di mercato all'avvio
+        getMarketData();
     </script>
 </body>
+
 </html>
