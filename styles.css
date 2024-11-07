@@ -1,7 +1,7 @@
 /* Stili di base */
 body {
     font-family: Arial, sans-serif;
-    background-color: #222;
+    background-color: #1f1f1f;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -19,15 +19,16 @@ h1, h2, h3 {
     margin-bottom: 30px;
 }
 
-/* Sezione Leva */
+/* Sezione Leva e Futures */
 .leverage {
-    background-color: #444;
+    background-color: #333;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .leverage h2 {
-    color: #f1f1f1;
+    color: #ff4081;
 }
 
 .leverage p {
@@ -38,6 +39,7 @@ h1, h2, h3 {
 .market-data {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .market-item {
@@ -46,6 +48,7 @@ h1, h2, h3 {
     border-radius: 8px;
     width: 30%;
     text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .market-item h3 {
@@ -56,11 +59,12 @@ h1, h2, h3 {
     color: #1db954;
 }
 
-/* Sezione Grafico */
+/* Sezione Grafico Trading */
 .chart {
     background-color: #444;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .chart canvas {
@@ -69,9 +73,10 @@ h1, h2, h3 {
 
 /* Sezione Ordine */
 .order-entry {
-    background-color: #444;
+    background-color: #333;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .order-entry label {
@@ -84,7 +89,7 @@ h1, h2, h3 {
     margin: 5px;
     border-radius: 5px;
     border: 1px solid #555;
-    background-color: #333;
+    background-color: #222;
     color: #fff;
     width: 100%;
 }
@@ -102,42 +107,4 @@ h1, h2, h3 {
     background-color: #e7376a;
 }
 
-/* Sezione Order Book */
-.order-book {
-    background-color: #444;
-    padding: 20px;
-    border-radius: 8px;
-}
-
-.order-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.order-table th, .order-table td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #4a4a6a;
-}
-
-.order-table th {
-    background-color: #3b3b5c;
-    color: #ffffff;
-}
-
-.order-table td {
-    color: #c5c6ca;
-}
-
-/* Responsività */
-@media (max-width: 768px) {
-    .market-data {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .market-item {
-        width: 80%;
-        margin: 10px 0;
-    }
-}
+/* Sezione
